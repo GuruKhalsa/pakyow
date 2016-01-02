@@ -1,4 +1,7 @@
 Pakyow::Config.register :logger do |config|
+  # whether or not pakyow should write to a log
+  config.opt :log, true
+
   # the default level to log at
   config.opt :level, :debug
 
@@ -14,6 +17,9 @@ Pakyow::Config.register :logger do |config|
   # whether or not the log file should be flushed automatically
   config.opt :auto_flush
 
+  # whether or not pakyow should log to stdout
+  config.opt :log_output, true
+
   # whether or not the log file should be colorized
   config.opt :colorize
 end.env :development do |opts|
@@ -23,5 +29,6 @@ end.env :development do |opts|
 end.env :production do |opts|
   opts.sync = false
   opts.auto_flush = false
+  opts.log_output = false
   opts.colorize = false
 end
