@@ -1,1 +1,1 @@
-Pakyow::App.builder.use Pakyow::Middleware::Logger if Pakyow::Config.logger.log
+Pakyow::App.builder.use Pakyow::Middleware::Logger if Pakyow::Config.logger.enabled
