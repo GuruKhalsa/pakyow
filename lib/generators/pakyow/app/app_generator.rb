@@ -1,6 +1,7 @@
 require 'erb'
 require 'fileutils'
 require 'securerandom'
+require_relative '../../../version.rb'
 
 module Pakyow
   module Generators
@@ -46,6 +47,7 @@ module Pakyow
           end
         end
 
+        add_pakyow_to_gemfile
         exec
         puts "Done! Run `cd #{@dest}; pakyow server` to get started!"
       end
@@ -67,6 +69,19 @@ module Pakyow
           erb = ERB.new(File.read(path))
           File.open(generated_path, 'w') { |f| f.write(erb.result(binding)) }
         end
+      end
+
+      def add_pakyow_to_gemfile
+        File.open("#{@dest}/Gemfile", 'a') { |f|
+          if Gem::Version.create(Pakyow::VERSION) > Gem.latest_version_for('pakyow')
+            f.puts "gem 'pakyow', github: 'pakyow/pakyow'"
+            pakyow_version = 'master'
+          else 
+            f.puts "gem 'pakyow', '~> 0.10'"
+            pakyow_version = '~> 0.10'
+          end
+          puts "Adding Pakyow #{pakyow_version} to Gemfile"
+        }
       end
 
       def exec
